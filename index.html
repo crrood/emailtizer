@@ -1,0 +1,78 @@
+<h2> Emailtizer 1.0 </h2>
+<p>Build: 32</p>
+
+<td>Full Name:</td>
+<input id="cando_name" onkeypress="checkKeypress()" name="full name" />
+
+<body onload="onLoad()"/>
+
+<p id="output" /p>
+
+
+<script>
+
+function emailtize() {
+	
+	// Get candidate name from form
+	rawCandoString = document.getElementById("cando_name").value.replace(/^\s+|\s+$/g, '')
+	
+	// Make sure it's a valid name
+	if (rawCandoString.length == 0) {
+		output("Enter a name")
+		document.getElementById("cando_name").focus()
+		return
+	}
+	else if (rawCandoString.split(" ").length != 2) {
+		output("Name must be two words (first last)")
+		document.getElementById("cando_name").focus()
+		return
+	}
+	
+	// Split into first and last names
+	candoString = rawCandoString.split(" ")
+	first = candoString[0]
+	last = candoString[1]
+	
+	// First letters of first and last names
+	f = first.slice(0,1)
+	l = last.slice(0,1)
+	
+	// Find all the likely combinations
+	result = ""
+	emailDomains = ["gmail", "yahoo", "hotmail", "msn"]
+	for (i=0; i < emailDomains.length; i++) {
+		result += first + last + "@" + emailDomains[i] + ".com<br>"
+		result += f + last + "@" + emailDomains[i] + ".com<br>"
+		result += first + l + "@" + emailDomains[i] + ".com<br>"
+		result += last + first + "@" + emailDomains[i] + ".com<br>"
+		result += last + f + "@" + emailDomains[i] + ".com<br>"
+		result += l + first + "@" + emailDomains[i] + ".com<br>"
+		result += first + "@" + emailDomains[i] + ".com<br>"
+		result += last + "@" + emailDomains[i] + ".com<br>"
+		result += "<br>"
+	}
+	
+	// Output that biznis
+	output(result)
+	
+}
+
+function output(message) {
+	// Output message to result output area
+	document.getElementById("output").innerHTML = message
+}
+
+function checkKeypress() {
+	// Run method on enter keypress
+	if (event.keyCode == 13) {
+		emailtize()
+	}
+}
+
+function onLoad() {
+	// Set focus to candidate name field on page load
+	document.getElementById("cando_name").focus()
+}
+
+
+</script>
